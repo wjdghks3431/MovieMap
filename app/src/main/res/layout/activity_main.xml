@@ -6,24 +6,30 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <!-- 메인 화면 -->
+    <LinearLayout
+        android:id="@+id/mainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-<!--    클릭했을 떄 화면이 바뀌는 부분   -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+    </LinearLayout>
+
+    <!-- 클릭했을 때 화면이 바뀌는 부분 -->
     <FrameLayout
         android:id="@+id/contaniners"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:layout_above="@id/btnbottom"
+        android:visibility="gone">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:id ="@+id/notice">
-
-        </LinearLayout>
-
-
-<!--해당 프레그먼트부분의 화면으로 바꾸어 주는 부분-->
+        <!-- 프레그먼트 부분의 화면으로 바꾸어 주는 뷰 -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -31,7 +37,6 @@
 
         </RelativeLayout>
     </FrameLayout>
-
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/btnbottom"

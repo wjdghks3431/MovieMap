@@ -1,64 +1,103 @@
 package com.example.moviemap;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class HomeFragment extends Fragment {
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import java.util.ArrayList;
+import java.util.List;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class HomeFragment extends Fragment implements ItemAdapter.OnItemListener {
 
-    public HomeFragment() {
-        // Required empty public constructor
-    }
+    private ItemAdapter adapter;
+    private List<ItemModel> itemList;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        setUpRecyclerView(view);
+
+        return view;
     }
 
+    /****************************************************
+     리사이클러뷰, 어댑터 셋팅
+     ***************************************************/
+    private void setUpRecyclerView(View view) {
+        //recyclerview
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        //adapter
+        itemList = new ArrayList<>(); //샘플데이터
+        fillData();
+        adapter = new ItemAdapter(itemList, this);
+        recyclerView.setAdapter(adapter);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL); //밑줄
+        recyclerView.addItemDecoration(dividerItemDecoration);
+    }
+
+    private void fillData() {
+        itemList = new ArrayList<>(); //샘플데이터
+        itemList.add(new ItemModel(R.drawable.movie1, "One", "Ten"));
+        itemList.add(new ItemModel(R.drawable.movie2, "Two", "Eleven"));
+        itemList.add(new ItemModel(R.drawable.movie3, "Three", "Twelve"));
+        itemList.add(new ItemModel(R.drawable.movie1, "Four", "Thirteen"));
+        itemList.add(new ItemModel(R.drawable.movie2, "Five", "Fourteen"));
+        itemList.add(new ItemModel(R.drawable.movie3, "Six", "Fifteen"));
+        itemList.add(new ItemModel(R.drawable.movie1, "Seven", "Sixteen"));
+        itemList.add(new ItemModel(R.drawable.movie2, "Eight", "Seventeen"));
+        itemList.add(new ItemModel(R.drawable.movie3, "Nine", "Eighteen"));
+    }
+
+    /****************************************************
+     onCreateOptionsMenu SearchView  기능구현
+     ***************************************************/
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return true;
+            }
+        });
+    }
+
+
+    /****************************************************
+     리사이클러뷰 클릭이벤트 인터페이스 구현
+     ***************************************************/
+    @Override
+    public void onItemClicked(int position) {
+        Toast.makeText(requireContext(), "" + position, Toast.LENGTH_SHORT).show();
     }
 }

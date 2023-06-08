@@ -5,10 +5,14 @@
     android:layout_height="match_parent"
     tools:context=".BookmarkFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="BOOKMARK" />
+    <Button
+        android:id="@+id/signin_button"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="로그인 화면"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
 </FrameLayout>
