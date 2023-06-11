@@ -1,12 +1,12 @@
 package com.example.moviemap;
 
-public class ItemModel {
+public class MainActivityItemModel {
 
     private int imageResource;
     private String text1;
     private String text2;
 
-    public ItemModel(int imageResource, String text1, String text2) {
+    public MainActivityItemModel(int imageResource, String text1, String text2) {
         this.imageResource = imageResource;
         this.text1 = text1;
         this.text2 = text2;
@@ -35,4 +35,6 @@ public class ItemModel {
     public void setText2(String text2) {
         this.text2 = text2;
     }
+
+
 }
